@@ -1,4 +1,4 @@
-import { ADD_USER, REMOVE_USER } from '../constants'
+import { ADD_USER, REMOVE_USER, EDIT_USER } from '../constants'
 
 const USERS = [
     { id: 1, name: 'Alex' },
@@ -18,6 +18,13 @@ const users = (state = USERS, { type, id, name }) => {
             ]
         case REMOVE_USER:
             return [...state].filter(user => user.id !== id)
+        case EDIT_USER:
+            return [...state].map(user => {
+                if(user.id === id) {
+                    user.name = name;
+                }
+                return user;
+            });
         default:
             return state
     }

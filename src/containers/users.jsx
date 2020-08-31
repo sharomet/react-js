@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addUser, removeUser } from '../actions/actionUsers'
+import { addUser, removeUser, editUser } from '../actions/actionUsers'
 
 class Users extends React.Component {
 
     state = {
-        userName: ''
+        userName: '',
+        userId: ''
     }
 
     handleInputChange = ({ target: { value } }) => {
@@ -26,6 +27,24 @@ class Users extends React.Component {
         }
     }
 
+    editUser = (event, id) => {
+        event.preventDefault();
+        const { users } = this.props;
+        this.setState({
+            userName: [...users].filter(user => user.id === id)[0].name,
+            userId: id
+        })
+    }
+
+    changeUser = () => {
+        const { editUser } = this.props
+        const { userName, userId } = this.state
+        editUser(userId, userName)
+        this.setState({
+            userName: ''
+        })
+    }
+
     render() {
         const { userName } = this.state;
         const { users, removeUser } = this.props
@@ -33,14 +52,32 @@ class Users extends React.Component {
         return (
             <>
                 <form onSubmit={ this.addUser }>
-                    <input type="text" onChange={ this.handleInputChange } value={ userName }/>
+                    <input
+                        type="text"
+                        onChange={ this.handleInputChange }
+                        value={ userName }/>
                     <button type="submit">
                         Add
+                    </button>
+                    <button
+                        type="button"
+                        onClick={ this.changeUser }>
+                        Edit
                     </button>
                 </form>
                 <ul>
                     { isUsersExist && users.map(({ id, name }) => <li key={ id }>
-                        { name } <span onClick={() => removeUser(id)}>x</span>
+                        { name }
+                        <a href="/#"
+                           onClick={ event => this.editUser(event, id) }
+                           className="edit">
+                            Edit
+                        </a>
+                        <span
+                            onClick={ () => removeUser(id) }
+                            className="remove">
+                            Remove
+                        </span>
                     </li>) }
                 </ul>
             </>
@@ -50,4 +87,4 @@ class Users extends React.Component {
 
 export default connect(state => ({
     users: state.users,
-}), { addUser, removeUser })(Users);
+}), { addUser, removeUser, editUser })(Users);

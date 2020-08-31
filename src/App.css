@@ -1,0 +1,23 @@
+hrml, body {
+    height: 100%;
+}
+body {
+    background-color: #fafafa;
+    color: #656565;
+    line-height: 1.5;
+    font-family: sans-serif, arial;
+    font-size: 1rem;
+}
+.edit,
+.remove {
+    font-size: 0.9rem;
+    margin-left: .4rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+.edit {
+    color: #13bf05;
+}
+.remove {
+    color: #cb0707;
+}
